@@ -17,7 +17,7 @@ public class SocketHandler {
     public static void init() {
         try {
             if (serverSocket == null) {
-                serverSocket = new ServerSocket(16500);
+                serverSocket = new ServerSocket(Contants.SOCKET_PORT);
             }
             //一直不停的循环接收客户端连接
             while (flag) {
