@@ -1,9 +1,7 @@
 package com.example.gpstrackerserver.socket;
 
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,47 +35,21 @@ public class ClientThread extends Thread {
             String ip = socket.getInetAddress().getHostAddress();
             System.out.println(ip);
             try {
-//                List<String> lines = IOUtils.readLines(inputStream, Contants.CHARSET);
-//                System.out.println(lines);
-//                handleClientMessage(lines);
-
-
-//                InputStream inputStream = socket.getInputStream();
-//                byte[] bytes = new byte[1024];
-//                int len;
-//                StringBuilder sb = new StringBuilder();
-//                while ((len = inputStream.read(bytes)) != -1) {
-//                    //注意指定编码格式，发送方和接收方一定要统一，建议使用UTF-8
-//                    sb.append(new String(bytes, 0, len, StandardCharsets.UTF_8));
-//                }
-//                System.out.println("get message from client: " + sb);
-
-
-                DataInputStream dataInputStream = new DataInputStream(inputStream);
-                String s = dataInputStream.readUTF();
-                System.out.println(s);
+                byte[] bytes = new byte[2048];
+                int length = inputStream.read(bytes);
+                if (length == -1) {
+                    flag = false;
+                }
+                System.out.print("length = " + length);
+                String str = new String(bytes, 0, length);
+                System.out.println(str);
+                if (str.equals("hello")) {
+                    outputStream.write("hi".getBytes());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * 删掉结尾的回车符
-     *
-     * @param string
-     * @return
-     */
-    private String deleteReturnCrlfAtTheEnd(String string) {
-        for (int i = 0; i < 2; i++) {
-            if (string.endsWith("\n")) {
-                string = StringUtils.removeEnd(string, "\n");
-            }
-            if (string.endsWith("\r")) {
-                string = StringUtils.removeEnd(string, "\r");
-            }
-        }
-        return string;
     }
 
     /**
