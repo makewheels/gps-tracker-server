@@ -1,4 +1,4 @@
-package com.example.gpstrackerserver;
+package com.example.gpstrackerserver.socket;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;

@@ -1,4 +1,4 @@
-package com.example.gpstrackerserver;
+package com.example.gpstrackerserver.bean;
 
 import lombok.Data;
 

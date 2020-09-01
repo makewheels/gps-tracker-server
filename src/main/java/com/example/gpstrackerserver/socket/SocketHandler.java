@@ -1,5 +1,6 @@
-package com.example.gpstrackerserver;
+package com.example.gpstrackerserver.socket;
 
+import com.example.gpstrackerserver.util.Contants;
 import lombok.Data;
 
 import java.io.IOException;

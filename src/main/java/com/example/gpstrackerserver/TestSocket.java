@@ -1,5 +1,7 @@
 package com.example.gpstrackerserver;
 
+import com.example.gpstrackerserver.util.Contants;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,7 +11,8 @@ import java.util.List;
 
 public class TestSocket {
     public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("127.0.0.1", Contants.SOCKET_PORT);
+//        Socket socket = new Socket("127.0.0.1", Contants.SOCKET_PORT);
+        Socket socket = new Socket("106.12.57.49", Contants.SOCKET_PORT);
         OutputStream outputStream = socket.getOutputStream();
         List<String> lines = new ArrayList<>();
         lines.add("a=1");
