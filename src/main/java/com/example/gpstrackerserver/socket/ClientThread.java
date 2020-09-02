@@ -1,12 +1,16 @@
 package com.example.gpstrackerserver.socket;
 
+import com.example.gpstrackerserver.bean.UploadData;
+import com.example.gpstrackerserver.bean.UploadDataDao;
+import com.example.gpstrackerserver.util.Constants;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.List;
+import java.util.Date;
 
 /**
  * 客户端线程
@@ -14,10 +18,15 @@ import java.util.List;
  */
 @Data
 public class ClientThread extends Thread {
+    @Autowired
+    private UploadDataDao uploadDataDao;
+
     private boolean flag = true;
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
+    //记录最后一次客户端上传数据的时间，如果超时，那就关闭这个线程
+    private long lastSubmitTime;
 
     public ClientThread(Socket socket) {
         this.socket = socket;
@@ -37,15 +46,20 @@ public class ClientThread extends Thread {
             try {
                 byte[] bytes = new byte[2048];
                 int length = inputStream.read(bytes);
+                //记录时间
+                long currentTimeMillis = System.currentTimeMillis();
+                //比较时间，如果距离上次传数据已经超时，则结束本线程
+                if (currentTimeMillis - lastSubmitTime > Constants.SOCKET_TIME_OUT_MILLIS) {
+                    flag = false;
+                    return;
+                }
+                lastSubmitTime = currentTimeMillis;
                 if (length == -1) {
                     flag = false;
                 }
-                System.out.print("length = " + length);
                 String str = new String(bytes, 0, length);
                 System.out.println(str);
-                if (str.equals("hello")) {
-                    outputStream.write("hi".getBytes());
-                }
+                handleClientMessage(str);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -55,25 +69,23 @@ public class ClientThread extends Thread {
     /**
      * 处理客户端信息
      *
-     * @param lines
+     * @param message
      */
-    private void handleClientMessage(List<String> lines) {
-        //先找到head和body的分界线
-        int headBodySplitIndex = 0;
-        for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-            if (line.equals("#####HEAD-BODY-SPLIT#####")) {
-                headBodySplitIndex = i;
-                break;
+    private void handleClientMessage(String message) {
+        UploadData uploadData = new UploadData();
+        uploadData.setClientIp(socket.getInetAddress().getHostAddress());
+        uploadData.setCreateTime(new Date());
+        String[] split = message.split("&");
+        for (String kv : split) {
+            String[] kvArr = kv.split("=");
+            String key = kvArr[0];
+            String value = kvArr[1];
+            if (key.equals("fileId")) {
+                uploadData.setFileId(Long.parseLong(value));
+            } else if (key.equals("GNRMC")) {
+                uploadData.setData_GNRMC(value);
             }
         }
-        //在前面的是head部分
-        for (int i = 0; i < headBodySplitIndex - 1; i++) {
-            String line = lines.get(i);
-            String[] split = line.split("=");
-            String key = split[0];
-            String value = split[1];
-            System.out.println(key + " = " + value + "  ,   length = " + value.length());
-        }
+        uploadDataDao.save(uploadData);
     }
 }

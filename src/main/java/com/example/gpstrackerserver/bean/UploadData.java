@@ -34,15 +34,14 @@ public class UploadData implements Serializable {
     private Date createTime;
 
     @Column(length = 2000)
-    private String data_ATGM336H;   //GPS数据
+    private String data_GNRMC;   //GPS数据
 
     @Column(length = 1000)
     private String data_DHT11;      //温湿度数据
 
-    private String sessionId;
+    private long fileId;        //客户端文件id，相当于sessionId
     private String imei;            //SIM800 IMEI
     private String clientIp;        //ip
-    private String codeId;          //代码中的硬编码id
 
 
 }
