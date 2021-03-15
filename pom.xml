@@ -90,6 +90,11 @@
             <artifactId>aliyun-java-sdk-iot</artifactId>
             <version>7.20.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-jms-client</artifactId>
+            <version>0.47.0</version>
+        </dependency>
 
     </dependencies>
 
