@@ -10,17 +10,20 @@ import javax.annotation.Resource;
  * @Author makewheels
  * @Time 2021.03.14 22:28:45
  */
-@Controller("aliyun")
+@Controller
+@RequestMapping("aliyun")
 public class AliyunController {
     @Resource
-    private AliyunService aliyunService;
+    private AliyunAmqpService aliyunAmqpService;
+    @Resource
+    private AliyunMnsService aliyunMnsService;
 
     @RequestMapping("init")
     @ResponseBody
     public String init() {
-        System.out.println("afwefaw");
         try {
-            aliyunService.init();
+            aliyunAmqpService.init();
+            aliyunMnsService.receive();
         } catch (Exception e) {
             e.printStackTrace();
         }

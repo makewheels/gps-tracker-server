@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
-public class AliyunService {
+public class AliyunAmqpService {
     @Value("${aliyun.iot.accessKey}")
     private String accessKey;
 
