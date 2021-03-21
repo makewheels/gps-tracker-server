@@ -23,12 +23,12 @@ public class AliyunController {
         new Thread(() -> {
             try {
                 aliyunAmqpService.init();
+//                aliyunMnsService.receive();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
 
-//            aliyunMnsService.receive();
         return "sssss";
     }
 }

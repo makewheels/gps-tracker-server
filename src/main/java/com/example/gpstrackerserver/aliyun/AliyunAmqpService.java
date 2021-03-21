@@ -56,7 +56,7 @@ public class AliyunAmqpService {
             Runtime.getRuntime().availableProcessors(),
             Runtime.getRuntime().availableProcessors() * 2,
             60, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(200));
+            new LinkedBlockingQueue<>(50));
 
     public void init() throws Exception {
         String consumerGroupId = "DEFAULT_GROUP";
