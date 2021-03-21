@@ -4,7 +4,6 @@ import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.model.Message;
-import com.aliyuncs.DefaultAcsClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

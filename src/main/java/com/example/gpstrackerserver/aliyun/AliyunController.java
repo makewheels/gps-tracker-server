@@ -11,22 +11,24 @@ import javax.annotation.Resource;
  * @Time 2021.03.14 22:28:45
  */
 @Controller
-@RequestMapping("aliyun")
 public class AliyunController {
     @Resource
     private AliyunAmqpService aliyunAmqpService;
     @Resource
     private AliyunMnsService aliyunMnsService;
 
-    @RequestMapping("init")
+    @RequestMapping("aliyun")
     @ResponseBody
     public String init() {
-        try {
-            aliyunAmqpService.init();
-            aliyunMnsService.receive();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            try {
+                aliyunAmqpService.init();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+//            aliyunMnsService.receive();
         return "sssss";
     }
 }

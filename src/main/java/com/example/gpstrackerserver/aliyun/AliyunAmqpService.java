@@ -48,8 +48,7 @@ public class AliyunAmqpService {
         if (client != null)
             return client;
         IClientProfile profile = DefaultProfile.getProfile(region, accessKey, accessSecret);
-        client = new DefaultAcsClient(profile);
-        return client;
+        return new DefaultAcsClient(profile);
     }
 
     //业务处理异步线程池，线程池参数可以根据您的业务特点调整，或者您也可以用其他异步方式处理接收到的消息。
@@ -125,10 +124,7 @@ public class AliyunAmqpService {
             String content = new String(body);
             String topic = message.getStringProperty("topic");
             String messageId = message.getStringProperty("messageId");
-            log.info("receive message"
-                    + ",\n topic = " + topic
-                    + ",\n messageId = " + messageId
-                    + ",\n content = " + content);
+            log.info(content);
         } catch (JMSException e) {
             e.printStackTrace();
         }
