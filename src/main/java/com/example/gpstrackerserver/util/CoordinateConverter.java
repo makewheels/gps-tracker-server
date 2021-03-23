@@ -42,10 +42,7 @@ public class CoordinateConverter {
         else
             longitudeString = longitude.toString();
 
-        String[] result = new String[2];
-        result[0] = latitudeString;
-        result[1] = longitudeString;
-        return result;
+        return new String[]{latitudeString, longitudeString};
     }
 
     public static void main(String[] args) {
